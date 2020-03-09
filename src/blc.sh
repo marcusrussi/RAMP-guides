@@ -5,7 +5,7 @@ num=$(($RANDOM%9999))
 
 # Start an HTTP server for 'blc' to access .html files in this directory,
 # make it quiet by redirecting output to /dev/null. Runs in background.
-python -m SimpleHTTPServer $num 2> /dev/null > /dev/null &
+python -m SimpleHTTPServer "$num" 2> /dev/null > /dev/null &
 
 # Store the PID so we can kill it later
 PID=$!
@@ -16,7 +16,7 @@ PID=$!
 # it into a pdf, however, right now the colors aren't working for some reason.
 blc --filter-level 1 \
     --input "http://0.0.0.0:$num/$1" |
-  aha | wkhtmltopdf --quiet - $2
+  aha | wkhtmltopdf --quiet - "$2"
 
 # End the http server
 kill $PID

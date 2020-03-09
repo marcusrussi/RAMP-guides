@@ -50,12 +50,13 @@ out/broken/%.pdf: out/html/%.html
 out/md/%.md: out/odt/%.odt
 	@mkdir -p $(dir $@)
 	# The -s flag means "standalone," see 'man pandoc' for details
-	pandoc -s -o $@ $^
+	pandoc --from odt --to markdown --standalone --output $@ $^
 
 out/html/%.html: out/odt/%.odt
 	@mkdir -p $(dir $@)
 	# You have to have a <title> so here is a crappy one
-	pandoc --metadata title=$(basename $@) -s -o $@ $^
+	pandoc --metadata "title:$(basename $@)" \
+	  --from odt --to html --standalone --output $@ $^
 
 out/odt/%.odt: out/guides_manifest.txt # A trick to get all the ODTs at once
 	@touch -c $@
